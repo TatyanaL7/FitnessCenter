@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Клиенты фитнес-центра</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { background: #f0f0f0; padding: 15px; border-radius: 5px; }
+        .client-card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .field { margin: 5px 0; }
+        .field-label { font-weight: bold; color: #333; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ФИО: {{ fio }}</h1>
+        <h2>Группа: {{ group }}</h2>
+    </div>
+
+    <h3>Опубликованные клиенты фитнес-центра</h3>
+
+    {% if clients %}
+        {% for client in clients %}
+        <div class="client-card">
+            <h4>Клиент: {{ client.full_name }}</h4>
+
+            <div class="field">
+                <span class="field-label">ФИО клиента:</span> {{ client.full_name }}
+            </div>
+
+            <div class="field">
+                <span class="field-label">Дата рождения:</span> {{ client.birth_date }}
+            </div>
+
+            <div class="field">
+                <span class="field-label">Абонемент:</span>
+                {% if client.membership %}
+                    {{ client.membership.get_type_display }} ({{ client.membership.price }} руб.)
+                {% else %}
+                    Не указан
+                {% endif %}
+            </div>
+
+            <div class="field">
+                <span class="field-label">Телефон:</span> {{ client.phone }}
+            </div>
+
+            <div class="field">
+                <span class="field-label">Занятия:</span>
+                {% if client.workouts.all %}
+                    <ul>
+                        {% for workout in client.workouts.all %}
+                        <li>{{ workout.title }} - {{ workout.time|date:"d.m.Y H:i" }} (тренер: {{ workout.trainer.full_name }})</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    Не записан на занятия
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Нет опубликованных клиентов.</p>
+    {% endif %}
+</body>
+</html>

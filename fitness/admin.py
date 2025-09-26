@@ -7,7 +7,7 @@ from .models import Membership, Trainer, Workout, Client
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
     list_display = ['full_name', 'birth_date', 'membership', 'phone', 'display_workouts']
-    list_filter = ['membership', 'birth_date']
+    list_filter = ['membership', 'birth_date', 'is_public']
     search_fields = ['full_name', 'phone', 'workouts__title']
     filter_horizontal = ['workouts']
 
